@@ -15,11 +15,11 @@ export interface OfferItem { id: ID; type: OfferItemType; name: string; quantity
 export interface Offer { id: ID; workspaceId: ID; dealId: ID; name: string; status: 'draft'|'sent'|'accepted'; items: OfferItem[]; }
 export interface Invoice { id: ID; workspaceId: ID; clientId: ID; dealId?: ID; status: 'draft'|'sent'|'paid'|'overdue'; total: number; dueAt: string; }
 export interface Payment { id: ID; invoiceId: ID; amount: number; status: 'mock_authorized'|'paid'|'failed'; providerRef: string; }
-export interface BusinessEvent { id: ID; workspaceId: ID; type: string; title: string; entityType: string; entityId: ID; actorUserId: ID; createdAt: string; payload?: Record<string, string|number|boolean>; }
+export interface BusinessEvent { id: ID; workspaceId: ID; type: string; title: string; entityType: string; entityId: ID; actorUserId: ID; createdAt: string; payload?: Record<string, string|number|boolean|undefined>; metadata?: Record<string, string|number|boolean|undefined>; }
 export interface AuditLog { id: ID; workspaceId: ID; actorUserId: ID; action: string; entityType: string; entityId: ID; before?: unknown; after?: unknown; createdAt: string; }
 export interface Notification { id: ID; workspaceId: ID; userId: ID; title: string; body: string; read: boolean; createdAt: string; }
 export interface Rule { id: ID; workspaceId: ID; name: string; enabled: boolean; triggerEventType: string; conditions: Record<string, string>; actions: {type: 'create_task'|'assign_user'|'notify'|'create_event'; value: string}[]; priority: number; }
-export interface Workflow { id: ID; workspaceId: ID; name: string; enabled: boolean; triggerEventType: string; steps: {type: 'create_deal'|'assign_manager'|'create_task'|'send_notification'; label: string}[]; }
+export interface Workflow { id: ID; workspaceId: ID; name: string; enabled: boolean; triggerEventType: string; steps: {type: 'create_deal'|'assign_manager'|'create_task'|'send_notification'|'create_invoice'|'create_installation'; label: string}[]; }
 export interface Equipment { id: ID; workspaceId: ID; model: string; serial: string; clientId: ID; locationId: ID; status: 'quoted'|'installed'|'servicing'; }
 export interface Installation { id: ID; workspaceId: ID; equipmentId: ID; visitId: ID; status: 'scheduled'|'completed'; completedAt?: string; }
 export interface ServiceRequest { id: ID; workspaceId: ID; equipmentId: ID; status: 'new'|'scheduled'|'resolved'; priority: 'low'|'medium'|'high'; issue: string; }
