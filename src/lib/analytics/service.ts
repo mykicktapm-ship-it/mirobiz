@@ -1,0 +1,5 @@
+import { repositories } from '../adapters/local';
+export function getDashboardAnalytics(workspaceId: string) {
+ const leads = repositories.leads.list(workspaceId), deals = repositories.deals.list(workspaceId), invoices = repositories.invoices.list(workspaceId), visits = repositories.visits.list(workspaceId), installations = repositories.installations.list(workspaceId), serviceRequests = repositories.serviceRequests.list(workspaceId), teams = repositories.teams.list(workspaceId);
+ return { leadsCount: leads.length, activeDeals: deals.filter(d=>!['won','lost'].includes(d.stage)).length, wonDeals: deals.filter(d=>d.stage==='won').length, revenue: invoices.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total,0), unpaidInvoices: invoices.filter(i=>i.status==='sent'||i.status==='overdue').reduce((s,i)=>s+i.total,0), scheduledInstallations: installations.filter(i=>i.status==='scheduled').length, completedInstallations: installations.filter(i=>i.status==='completed').length, serviceRequests: serviceRequests.length, teamWorkload: teams.map(t=>({team:t.name,count:visits.filter(v=>v.assignedTeamId===t.id).length})) };
+}
